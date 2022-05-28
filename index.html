@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head> 
+<body>
+  <div id="app">
+    <ul class="todo__list"></ul>
+    <div class="editor">
+      <input type="text" class="title" placeholder="제목">
+      <input type="date" class="date" placeholder="일">
+      <input type="text" class="time" placeholder="시간">
+      <button type="button" class="submit">입력</button>
+    </div>
+  </div>
+</body>
+<script type="module">
+  import { getItems } from './core/repository.js';
+  import TodoList from './core/todolist.js';
+
+  const { setTodoList, getTodoList, getUpdateItem, deleteTodoList } = TodoList();
+  const $editorButton = document.querySelector('.submit');
+
+  $editorButton.addEventListener('click', setTodoList);
+
+  const $todoList = document.querySelector('.todo__list');
+  $todoList.addEventListener('click', ({ target }) => {
+    if (target.classList.contains('update')) {
+      const updateIndex = target.parentElement.dataset.index;
+      getUpdateItem(Number(updateIndex));
+
+      return;
+    }
+
+    if (target.classList.contains('delete')) {
+      const deleteIndex = target.parentElement.dataset.index;
+
+      deleteTodoList(Number(deleteIndex));
+    }
+  });
+
+  getTodoList();
+</script>
+</html>
